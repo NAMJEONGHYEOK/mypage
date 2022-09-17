@@ -8,12 +8,13 @@ export default NextAuth({
         CredentialsProvider({
           // The name to display on the sign in form (e.g. 'Sign in with...')
           name: 'Credentials',
+          type: 'credentials',
           // The credentials is used to generate a suitable form on the sign in page.
           // You can specify whatever fields you are expecting to be submitted.
           // e.g. domain, username, password, 2FA token, etc.
           // You can pass any HTML attribute to the <input> tag through the object.
           credentials: {
-            username: { label: "Username", type: "text", placeholder: "jsmith" },
+            username: { label: "Id", type: "text" },
             password: {  label: "Password", type: "password" }
           },
           async authorize(credentials, req) {
@@ -24,29 +25,31 @@ export default NextAuth({
             // You can also use the `req` object to obtain additional parameters
             // (i.e., the request IP address)
 
-            // const res = await fetch("localhost:3000/admin", {
+            // const res = await fetch("localhost:3000/signin", {
             //   method: 'POST',
             //   body: JSON.stringify(credentials),
             //   headers: { "Content-Type": "application/json" }
             // })
             // const user = await res.json()
       
-            // // If no error and we have user data, return it
+            // If no error and we have user data, return it
             // if (res.ok && user) {
             //   return user
             // }
-            if (
-              credentials?.username === "test" &&
-              credentials.password === "test"
-          ) {
-              const user = { id: 1, name: "test user", email: "test@email.com" }
-              console.log(credentials);
-              return user;
-          }
-              console.log(credentials);
 
-            const user = { id: 3, name: "user", email: "user@email.com" }
-          return user;
+            // test sample 
+            if (credentials?.username === "test" && credentials.password === "test"){
+              const user = { id : 1 , name : "hello admin user"}
+              return user;
+            }else{
+
+              // throw new Error('invalid credentials')
+
+              return null;
+            }
+
+
+         
           }
         })
       ],
@@ -65,7 +68,7 @@ export default NextAuth({
     //     }
     //   },
 
-    //   secret: process.env.SECRET,
+    // 
     //   session: {
     //     strategy: 'jwt',
 
@@ -73,7 +76,8 @@ export default NextAuth({
     //   jwt: {
     //     secret: process.env.SECRET,
     //   },
-      // pages: {
-      //   signIn:"/signin"
-      // }
+    secret: process.env.SECRET,
+      pages: {
+        signIn:"/signin"
+      }
 })

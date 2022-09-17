@@ -13,6 +13,11 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useSession,signIn,signOut } from 'next-auth/react';
+import { Alert } from '@mui/material';
+import { useRouter } from 'next/router';
+
+
+
 
 function Copyright(props: any) {
   return (
@@ -30,23 +35,43 @@ function Copyright(props: any) {
 const theme = createTheme();
 
 export default function SignIn() {
+  const router = useRouter();
+
+  const { data: session,status} = useSession();
+  // if (status === 'authenticated'){
+  //   router.push('/home');
+  // }
+  
+
+
   const handleSubmit = async(event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     
     const data = new FormData(event.currentTarget);
-    // console.log({
-    //   email: data.get('email'),
-    //   password: data.get('password'),
-    // });
-    const email = data.get('email')
+    const username = data.get('id')
     const password = data.get('password')
       const response = await signIn("credentials",{
-        email,
+        username,
         password,
         redirect : false
       })
-      console.log(response);
+      .then ((res) => {
+        if(res?.error){
+          // console.log(res?.error);
+          // alert("Login Failed");
+
+          
+
+        } else {
+          // userouter? link? herf to home으로 이동
+          // <Link href='/home'>d</Link>
+          router.push('/home')
+        }
+      })
+    
   };
+
+
 
   return (
     <ThemeProvider theme={theme}>
@@ -71,10 +96,10 @@ export default function SignIn() {
               margin="normal"
               required
               fullWidth
-              id="email"
+              id="id"
               label="Email Address"
-              name="email"
-              autoComplete="email"
+              name="id"
+              autoComplete="off"
               autoFocus
             />
             <TextField
@@ -85,7 +110,7 @@ export default function SignIn() {
               label="Password"
               type="password"
               id="password"
-              autoComplete="current-password"
+              autoComplete="off"
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
@@ -96,7 +121,8 @@ export default function SignIn() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
-              onSubmit={()=>signIn()}
+             
+               onSubmit={()=>SignIn()}
             >
               Sign In
             </Button>

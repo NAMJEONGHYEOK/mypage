@@ -5,6 +5,7 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { Button } from '@mui/material';
 import { useSession, signIn, signOut } from "next-auth/react";
+import Link from 'next/link';
 
 
 const Home: NextPage = () => {
@@ -20,11 +21,18 @@ const Home: NextPage = () => {
         }}
       >
         <Typography variant="h4" component="h1" gutterBottom>
-          MUI v5 + Next.js with TypeScript example
+
+          Next.js + redux toolkit + MUI v5 + typescript   example
+        
         </Typography>
       
-          Go to the about page
-        <Button onClick={()=>signIn()}>sign in</Button>
+        {/* <Link href={"/signin"}  > */}
+          <Button variant="contained" onClick={() => signIn()}>
+            Go to the signin page
+          </Button>
+        {/* </Link> */}
+    
+        
       </Box>
     </Container>
   );
